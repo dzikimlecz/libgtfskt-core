@@ -93,7 +93,7 @@ data class StopTimeCsv(
     var timepoint: Int = 1,
 )
 
-data class Calendar(
+data class CalendarCsv(
     var service_id: String,
     var monday: Int,
     var tuesday: Int,
@@ -106,7 +106,7 @@ data class Calendar(
     var end_date: String,
 )
 
-data class CalendarDates(
+data class CalendarDatesCsv(
     var service_id: String,
     var date: String,
     var exception_type: Int,
