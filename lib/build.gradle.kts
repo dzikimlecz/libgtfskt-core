@@ -16,6 +16,10 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
+    implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-csv:2.15.2")
+
+    runtimeOnly("org.slf4j:slf4j-api:2.0.5")
+    runtimeOnly("org.slf4j:slf4j-simple:2.0.5")
 }
 
 java {
