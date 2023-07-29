@@ -49,7 +49,7 @@ data class RouteCsv(
     var route_url: String = "",
     var route_color: String = "",
     var route_text_color: String = "",
-    var route_sort_order: String = "",
+    var route_sort_order: Int = 0,
     var continuous_pickup: Int = 1,
     var continuous_drop_off: Int = 1,
 ) {
@@ -89,7 +89,7 @@ data class StopTimeCsv(
     var drop_off_type: Int = 0,
     var continuous_pickup: Int = 1,
     var continuous_drop_off: Int = 1,
-    var shape_dist_travelled: Int = 0,
+    var shape_dist_travelled: Double = 0.0,
     var timepoint: Int = 1,
 )
 
