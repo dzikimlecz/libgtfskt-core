@@ -107,6 +107,77 @@ enum class WheelchairAccessibility {
     }
 }
 
+enum class RouteType {
+
+    /**
+     * Tram, Streetcar, Light rail.
+     * Any light rail or street level system within a metropolitan area.
+     */
+    TRAM,
+
+    /**
+     * Subway, Metro.
+     * Any underground rail system within a metropolitan area.
+     */
+    METRO,
+
+    /**
+     * Rail.
+     * Used for intercity or long-distance travel.
+     */
+    RAIL,
+
+    /**
+     * Bus.
+     * Used for short- and long-distance bus routes.
+     */
+    BUS,
+
+    /**
+     * Ferry.
+     * Used for short- and long-distance boat service.
+     */
+    FERRY,
+
+    /**
+     * Cable tram.
+     * Used for street-level rail cars where the cable runs beneath the vehicle.
+     */
+    CABLE_TRAM,
+
+    /**
+     * Aerial lift, suspended cable car (e.g., gondola lift, aerial tramway).
+     * Cable transport where cabins, cars, gondolas or open chairs are
+     * suspended by means of one or more cables.
+     */
+    AERIAL_LIFT,
+
+    /**
+     * Funicular.
+     * Any rail system designed for steep inclines.
+     */
+    FUNICULAR,
+
+    /**
+     * Trolleybus.
+     * Electric buses that draw power from overhead wires using poles.
+     */
+    TROLLEYBUS,
+
+    /**
+     * Monorail.
+     * Railway in which the track consists of a single rail or a beam.
+     */
+    MONOORAIL,
+    ;
+
+    companion object {
+        fun fromInt(ordinal: Int) =
+            values().find { it.ordinal == ordinal }
+
+    }
+}
+
 enum class ContinuousPassengkerHandling {
 
     /**
