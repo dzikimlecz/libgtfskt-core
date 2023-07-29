@@ -2,7 +2,7 @@
 
 ## About
 
-LibGtfsKt is a small library for parsing and working with GTFS feeds.
+LibGtfsKt is a small library for parsing and working with GTFS.
 
 ## TODO
 
