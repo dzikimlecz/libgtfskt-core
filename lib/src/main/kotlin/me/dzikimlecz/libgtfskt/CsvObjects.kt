@@ -91,7 +91,13 @@ data class StopTimeCsv(
     var continuous_drop_off: Int = 1,
     var shape_dist_travelled: Double = 0.0,
     var timepoint: Int = 1,
-)
+) {
+    constructor() : this(
+        trip_id = "",
+        stop_id = "",
+        stop_sequence = 0,
+    )
+}
 
 data class CalendarCsv(
     var service_id: String,
@@ -104,11 +110,30 @@ data class CalendarCsv(
     var sunday: Int,
     var start_date: String,
     var end_date: String,
-)
+) {
+    constructor() : this(
+        "",
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        "",
+        "",
+    )
+}
 
 data class CalendarDatesCsv(
     var service_id: String,
     var date: String,
     var exception_type: Int,
-)
+) {
+    constructor() : this(
+        "",
+        "",
+        0,
+    )
+}
 
