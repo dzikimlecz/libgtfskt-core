@@ -50,7 +50,7 @@ enum class LocationType {
         fun fromInt(ordinal: Int) =
             values().find { it.ordinal == ordinal }
 
-        val DEFAULT = fromInt(0)
+        val DEFAULT = fromInt(0)!!
 
     }
 }
@@ -102,7 +102,7 @@ enum class WheelchairAccessibility {
         fun fromInt(ordinal: Int) =
             values().find { it.ordinal == ordinal }
 
-        val DEFAULT = fromInt(0)
+        val DEFAULT = fromInt(0)!!
 
     }
 }
@@ -135,7 +135,7 @@ enum class ContinuousPassengkerHandling {
         fun fromInt(ordinal: Int) =
             values().find { it.ordinal == ordinal }
 
-        val DEFAULT = fromInt(1)
+        val DEFAULT = fromInt(1)!!
 
     }
 }
@@ -157,7 +157,7 @@ enum class Direction {
         fun fromInt(ordinal: Int) =
             values().find { it.ordinal == ordinal }
 
-        val DEFAULT = fromInt(0)
+        val DEFAULT = fromInt(0)!!
     }
 }
 
@@ -184,7 +184,7 @@ enum class BikesAllowed {
         fun fromInt(ordinal: Int) =
             values().find { it.ordinal == ordinal }
 
-        val DEFAULT = fromInt(0)
+        val DEFAULT = fromInt(0)!!
     }
 }
 
@@ -215,7 +215,7 @@ enum class StopPassengerHandling {
         fun fromInt(ordinal: Int) =
             values().find { it.ordinal == ordinal }
 
-        val DEFAULT = fromInt(0)
+        val DEFAULT = fromInt(0)!!
 
     }
 }
@@ -236,7 +236,7 @@ enum class Timepoint {
         fun fromInt(ordinal: Int) =
             values().find { it.ordinal == ordinal }
 
-        val DEFAULT = fromInt(1)
+        val DEFAULT = fromInt(1)!!
     }
 
 }
