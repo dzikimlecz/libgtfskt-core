@@ -1,4 +1,4 @@
-package me.dzikimlecz.libgtfskt
+package me.dzikimlecz.libgtfskt.csv
 
 data class AgencyCsv(
     var agency_id: String = "",
