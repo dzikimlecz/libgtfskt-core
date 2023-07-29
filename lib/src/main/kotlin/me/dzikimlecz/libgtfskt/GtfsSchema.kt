@@ -1,5 +1,109 @@
 package me.dzikimlecz.libgtfskt
 
+import java.time.LocalDate
+import java.time.LocalTime
+import java.util.*
+
+///////////////////////////////////////////////////////////////////////////
+// Objects
+///////////////////////////////////////////////////////////////////////////
+
+data class Agency(
+    val id: String = "",
+    val name: String,
+    val url: String,
+    val timezone: TimeZone,
+    val lang: String? = null,
+    val phone: String? = null,
+    val fareUrl: String? = null,
+    val email: String? = null,
+)
+
+data class Stop(
+    val id: String,
+    val code: String? = null,
+    val name: String = "",
+    val desc: String? = null,
+    val lat: Double = 0.0,
+    val lon: Double = 0.0,
+    val zoneId: String = "",
+    val url: String? = null,
+    val locationType: LocationType = LocationType.DEFAULT,
+    val parentStation: Stop? = null,
+    val timezone: TimeZone? = null,
+    val wheelchairBoarding: WheelchairAccessibility =
+        WheelchairAccessibility.DEFAULT,
+    val levelId: String = "",
+    val platformCode: String? = null,
+)
+
+data class Route(
+    val id: String,
+    val agency: Agency? = null,
+    val shortName: String = "",
+    val longName: String = "",
+    val desc: String? = null,
+    val type: RouteType,
+    val url: String? = null,
+    val color: String? = null,
+    val textColor: String? = null,
+    val sortOrder: Int? = null,
+    val continuousPickup: ContinuousPassengkerHandling =
+        ContinuousPassengkerHandling.DEFAULT,
+    val continuousDropOff: ContinuousPassengkerHandling =
+        ContinuousPassengkerHandling.DEFAULT,
+)
+
+data class Trip(
+    val route: Route,
+    val service: Calendar,
+    val id: String,
+    val headsign: String? = null,
+    val shortName: String? = null,
+    val direction: Direction = Direction.DEFAULT,
+    val blockId: String? = null,
+    val shapeId: String? = null,
+    val wheelchairAccessible: WheelchairAccessibility =
+        WheelchairAccessibility.DEFAULT,
+    val bikesAllowed: BikesAllowed = BikesAllowed.DEFAULT,
+)
+
+data class StopTime(
+    val trip: Trip,
+    val arrivalTime: LocalTime = LocalTime.MIN,
+    val departureTime: LocalTime = LocalTime.MIN,
+    val stop: Stop,
+    val stopSequence: Int,
+    val stopHeadsign: String? = null,
+    val pickupType: StopPassengerHandling = StopPassengerHandling.DEFAULT,
+    val dropOffType: StopPassengerHandling = StopPassengerHandling.DEFAULT,
+    val continuousPickup: ContinuousPassengkerHandling =
+        ContinuousPassengkerHandling.DEFAULT,
+    val continuousDropOff: ContinuousPassengkerHandling =
+        ContinuousPassengkerHandling.DEFAULT,
+    val shapeDistTravelled: Double? = null,
+    val timepoint: Timepoint = Timepoint.DEFAULT,
+)
+
+data class Calendar(
+    val id: String,
+    val monday: Boolean,
+    val tuesday: Boolean,
+    val wednesday: Boolean,
+    val thursday: Boolean,
+    val friday: Boolean,
+    val saturday: Boolean,
+    val sunday: Boolean,
+    val startDate: LocalDate,
+    val endDate: LocalDate,
+)
+
+data class CalendarDates(
+    val calendar: Calendar,
+    val date: LocalDate,
+    val exceptionType: ExceptionType,
+)
+
 
 ///////////////////////////////////////////////////////////////////////////
 // ENUMS
