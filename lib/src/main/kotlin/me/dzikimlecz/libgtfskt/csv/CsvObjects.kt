@@ -1,5 +1,8 @@
 package me.dzikimlecz.libgtfskt.csv
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class AgencyCsv(
     var agency_id: String = "",
     var agency_name: String,
@@ -17,6 +20,7 @@ data class AgencyCsv(
     )
 }
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class StopCsv(
     var stop_id: String,
     var stop_code: String = "",
@@ -39,6 +43,7 @@ data class StopCsv(
     )
 }
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class RouteCsv(
     var route_id: String,
     var agency_id: String = "",
@@ -59,6 +64,7 @@ data class RouteCsv(
     )
 }
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class TripCsv(
     var route_id: String,
     var service_id: String,
@@ -78,6 +84,7 @@ data class TripCsv(
     )
 }
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class StopTimeCsv(
     var trip_id: String,
     var arrival_time: String = "",
@@ -99,6 +106,7 @@ data class StopTimeCsv(
     )
 }
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class CalendarCsv(
     var service_id: String,
     var monday: Int,
@@ -125,6 +133,7 @@ data class CalendarCsv(
     )
 }
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class CalendarDatesCsv(
     var service_id: String,
     var date: String,
