@@ -99,7 +99,7 @@ data class Calendar(
 )
 
 data class CalendarDates(
-    val calendar: Calendar,
+    val service: Calendar,
     val date: LocalDate,
     val exceptionType: ExceptionType,
 )
