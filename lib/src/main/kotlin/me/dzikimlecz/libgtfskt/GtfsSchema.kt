@@ -33,7 +33,7 @@ data class Stop(
     val timezone: TimeZone? = null,
     val wheelchairBoarding: WheelchairAccessibility =
         WheelchairAccessibility.DEFAULT,
-    val levelId: String = "",
+    val levelId: String? = null,
     val platformCode: String? = null,
 )
 
@@ -60,7 +60,7 @@ data class Trip(
     val id: String,
     val headsign: String? = null,
     val shortName: String? = null,
-    val direction: Direction = Direction.DEFAULT,
+    val direction: Direction? = null,
     val blockId: String? = null,
     val shapeId: String? = null,
     val wheelchairAccessible: WheelchairAccessibility =
@@ -70,8 +70,8 @@ data class Trip(
 
 data class StopTime(
     val trip: Trip,
-    val arrivalTime: LocalTime = LocalTime.MIN,
-    val departureTime: LocalTime = LocalTime.MIN,
+    val arrivalTime: LocalTime? = null,
+    val departureTime: LocalTime? = null,
     val stop: Stop,
     val stopSequence: Int,
     val stopHeadsign: String? = null,
