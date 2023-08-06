@@ -16,7 +16,7 @@ data class CsvFeed(
     val calendarDates: List<CalendarDatesCsv>,
 )
 
-fun mapObjects(csvFeed: CsvFeed): GtfsSchema {
+fun mapObjects(csvFeed: CsvFeed): GtfsFeed {
     val agencies = mapAgencies(csvFeed.agencies)
     val stops = mapStops(csvFeed.stops)
     val calendars = mapCalendars(csvFeed.calendars)
@@ -25,7 +25,7 @@ fun mapObjects(csvFeed: CsvFeed): GtfsSchema {
     val stopTimes = mapStopTimes(csvFeed.stopTimes, trips, stops)
     val calendarDates = mapCalendarDates(csvFeed.calendarDates, calendars)
 
-    return GtfsSchema(
+    return GtfsFeed(
         agencies,
         stops,
         routes,

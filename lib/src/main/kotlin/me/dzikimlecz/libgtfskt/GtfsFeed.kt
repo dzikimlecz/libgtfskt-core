@@ -8,7 +8,7 @@ import java.util.*
 // Schema
 ///////////////////////////////////////////////////////////////////////////
 
-data class GtfsSchema(
+data class GtfsFeed(
     val agencies: List<Agency>,
     val stops: List<Stop>,
     val routes: List<Route>,
