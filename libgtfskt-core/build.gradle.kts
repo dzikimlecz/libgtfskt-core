@@ -6,6 +6,9 @@ plugins {
     `java-library`
 }
 
+group = "me.dzikimlecz.libgtfskt"
+version = "0.1"
+
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
