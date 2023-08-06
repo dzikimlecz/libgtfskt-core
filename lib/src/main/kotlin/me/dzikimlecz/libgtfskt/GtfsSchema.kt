@@ -48,10 +48,10 @@ data class Route(
     val color: String? = null,
     val textColor: String? = null,
     val sortOrder: Int? = null,
-    val continuousPickup: ContinuousPassengkerHandling =
-        ContinuousPassengkerHandling.DEFAULT,
-    val continuousDropOff: ContinuousPassengkerHandling =
-        ContinuousPassengkerHandling.DEFAULT,
+    val continuousPickup: ContinuousPassengerHandling =
+        ContinuousPassengerHandling.DEFAULT,
+    val continuousDropOff: ContinuousPassengerHandling =
+        ContinuousPassengerHandling.DEFAULT,
 )
 
 data class Trip(
@@ -77,10 +77,10 @@ data class StopTime(
     val stopHeadsign: String? = null,
     val pickupType: StopPassengerHandling = StopPassengerHandling.DEFAULT,
     val dropOffType: StopPassengerHandling = StopPassengerHandling.DEFAULT,
-    val continuousPickup: ContinuousPassengkerHandling =
-        ContinuousPassengkerHandling.DEFAULT,
-    val continuousDropOff: ContinuousPassengkerHandling =
-        ContinuousPassengkerHandling.DEFAULT,
+    val continuousPickup: ContinuousPassengerHandling =
+        ContinuousPassengerHandling.DEFAULT,
+    val continuousDropOff: ContinuousPassengerHandling =
+        ContinuousPassengerHandling.DEFAULT,
     val shapeDistTravelled: Double? = null,
     val timepoint: Timepoint = Timepoint.DEFAULT,
 )
@@ -282,7 +282,7 @@ enum class RouteType {
     }
 }
 
-enum class ContinuousPassengkerHandling {
+enum class ContinuousPassengerHandling {
 
     /**
      * Continuous stopping pickup/drop-off.
