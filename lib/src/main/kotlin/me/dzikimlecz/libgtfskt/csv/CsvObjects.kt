@@ -2,6 +2,7 @@ package me.dzikimlecz.libgtfskt.csv
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
+const val UNSET = -1
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class AgencyCsv(
     var agency_id: String = "",
@@ -54,13 +55,13 @@ data class RouteCsv(
     var route_url: String = "",
     var route_color: String = "",
     var route_text_color: String = "",
-    var route_sort_order: Int = 0,
+    var route_sort_order: Int = UNSET,
     var continuous_pickup: Int = 1,
     var continuous_drop_off: Int = 1,
 ) {
     constructor() : this(
         route_id = "",
-        route_type = 0,
+        route_type = UNSET,
     )
 }
 
@@ -71,7 +72,7 @@ data class TripCsv(
     var trip_id: String,
     var trip_headsign: String = "",
     var trip_short_name: String = "",
-    var direction_id: Int = 0,
+    var direction_id: Int = UNSET,
     var block_id: String = "",
     var shape_id: String = "",
     var wheelchair_accessible: Int = 0,
@@ -96,13 +97,13 @@ data class StopTimeCsv(
     var drop_off_type: Int = 0,
     var continuous_pickup: Int = 1,
     var continuous_drop_off: Int = 1,
-    var shape_dist_travelled: Double = 0.0,
+    var shape_dist_travelled: Double = UNSET.toDouble(),
     var timepoint: Int = 1,
 ) {
     constructor() : this(
         trip_id = "",
         stop_id = "",
-        stop_sequence = 0,
+        stop_sequence = UNSET,
     )
 }
 
@@ -121,13 +122,13 @@ data class CalendarCsv(
 ) {
     constructor() : this(
         "",
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
-        0,
+        UNSET,
+        UNSET,
+        UNSET,
+        UNSET,
+        UNSET,
+        UNSET,
+        UNSET,
         "",
         "",
     )
@@ -142,7 +143,7 @@ data class CalendarDatesCsv(
     constructor() : this(
         "",
         "",
-        0,
+        UNSET,
     )
 }
 
