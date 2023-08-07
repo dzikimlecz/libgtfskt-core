@@ -1,5 +1,8 @@
 package me.dzikimlecz.libgtfskt
 
+import me.dzikimlecz.libgtfskt.csv.mapObjects
+import me.dzikimlecz.libgtfskt.csv.readAll
+import java.io.File
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -12,6 +15,8 @@ data class UpcomingService(
     val direction: String,
     val departure: LocalDateTime,
 )
+
+fun getFeed(directory: File): GtfsFeed = mapObjects(readAll(directory))
 
 interface FeedProcessor {
     fun getUpcomingServicesFor(stop: String): List<UpcomingService>
