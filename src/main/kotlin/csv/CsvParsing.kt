@@ -18,6 +18,20 @@ private val csvMapper = CsvMapper().apply {
 }
 
 ///////////////////////////////////////////////////////////////////////////
+// FEED
+///////////////////////////////////////////////////////////////////////////
+
+fun readAll(from: File) = CsvFeed(
+    readAgencies(File(from, "agency.txt")),
+    readStops(File(from, "stops.txt")),
+    readRoutes(File(from, "routes.txt")),
+    readTrips(File(from, "trips.txt")),
+    readStopTimes(File(from, "stop_times.txt")),
+    readCalendars(File(from, "calendar.txt")),
+    readCalendarDates(File(from, "calendar_dates.txt")),
+)
+
+///////////////////////////////////////////////////////////////////////////
 // AGENCIES
 ///////////////////////////////////////////////////////////////////////////
 
