@@ -3,6 +3,17 @@ package me.dzikimlecz.libgtfskt.csv
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 const val UNSET = -1
+
+data class CsvFeed(
+    val agencies: List<AgencyCsv>,
+    val stops: List<StopCsv>,
+    val routes: List<RouteCsv>,
+    val trips: List<TripCsv>,
+    val stopTimes: List<StopTimeCsv>,
+    val calendars: List<CalendarCsv>,
+    val calendarDates: List<CalendarDatesCsv>,
+)
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class AgencyCsv(
     var agency_id: String = "",

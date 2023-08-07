@@ -6,16 +6,6 @@ import java.time.LocalTime
 import java.time.format.DateTimeParseException
 import java.util.TimeZone.getTimeZone
 
-data class CsvFeed(
-    val agencies: List<AgencyCsv>,
-    val stops: List<StopCsv>,
-    val routes: List<RouteCsv>,
-    val trips: List<TripCsv>,
-    val stopTimes: List<StopTimeCsv>,
-    val calendars: List<CalendarCsv>,
-    val calendarDates: List<CalendarDatesCsv>,
-)
-
 fun mapObjects(csvFeed: CsvFeed): GtfsFeed {
     val agencies = mapAgencies(csvFeed.agencies)
     val stops = mapStops(csvFeed.stops)
