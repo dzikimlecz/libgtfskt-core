@@ -21,7 +21,7 @@ fun getFeed(directory: File): GtfsFeed = mapObjects(readAll(directory))
 
 interface FeedProcessor {
     fun getUpcomingServicesFor(stop: String): List<UpcomingService>
-
+    fun getUpcomingServicesFor(stopTemplate: Stop): List<UpcomingService>
 }
 
 fun feedProcessor(feed: GtfsFeed): FeedProcessor = FeedProcessorImpl(feed)
@@ -39,7 +39,20 @@ private class FeedProcessorImpl(val feed: GtfsFeed) : FeedProcessor {
             .limit(20)
             .collect(Collectors.toList())
 
-
+    override fun getUpcomingServicesFor(stopTemplate: Stop): List<UpcomingService> =
+        feed.stopTimes.stream()
+            .filter {
+                (it.stop.name == stopTemplate.name
+                        && it.stop.code == (stopTemplate.code ?: it.stop.code))
+            }
+            .filter(StopTime::isToday)
+            .map(StopTime::upcomingService)
+            .filter {
+                it.departure.toLocalTime()
+                    .isAfter(LocalTime.now().minusMinutes(1))
+            }
+            .limit(20)
+            .collect(Collectors.toList())
 
 
 
