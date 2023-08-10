@@ -378,9 +378,18 @@ private fun unknownValue(name: String, value: Any): Nothing =
 
 private fun parseHour(time: String): LocalTime? {
     if (time == "") return null
-    val hour = time.substring(0..1).toIntOrNull()
+    var hour = time.substring(0..1).toIntOrNull()
     val timeProper = if (hour != null && hour >= 24) {
-        (hour - 24).toString() + time.substring(2)
+        do {
+            hour -= 24
+        } while(hour >= 24)
+        buildString {
+            if (hour < 10) {
+                append('0')
+            }
+            append(hour)
+            append(time.substring(2))
+        }
     }
     else {
         time
