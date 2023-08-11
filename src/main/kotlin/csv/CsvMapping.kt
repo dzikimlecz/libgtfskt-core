@@ -7,11 +7,11 @@ import java.time.format.DateTimeParseException
 import java.util.TimeZone.getTimeZone
 
 fun mapObjects(csvFeed: CsvFeed): GtfsFeed {
-    val agencies = mapAgencies(csvFeed.agencies)
-    val stops = mapStops(csvFeed.stops)
-    val calendars = mapCalendars(csvFeed.calendars)
-    val routes = mapRoutes(csvFeed.routes, agencies)
-    val trips = mapTrips(csvFeed.trips, routes, calendars)
+    val agencies = mapAgencies(csvFeed.agencies).sortedBy { it.id }
+    val stops = mapStops(csvFeed.stops).sortedBy { it.id }
+    val calendars = mapCalendars(csvFeed.calendars).sortedBy { it.id }
+    val routes = mapRoutes(csvFeed.routes, agencies).sortedBy { it.id }
+    val trips = mapTrips(csvFeed.trips, routes, calendars).sortedBy { it.id }
     val stopTimes = mapStopTimes(csvFeed.stopTimes, trips, stops)
     val calendarDates = mapCalendarDates(csvFeed.calendarDates, calendars)
 
@@ -40,12 +40,16 @@ private fun mapStops(stopCsvs: List<StopCsv>): List<Stop> {
     val parents = grouped[true]?.map(StopCsv::toStop)
         ?: listOf()
 
+
     val children = grouped[false]?.map {
-        val parent = parents.find { stop -> stop.id == it.parent_station }
-            ?: throw NoSuchElementException(
+        val parentIndex = parents
+            .binarySearch { stop -> stop.id.compareTo(it.parent_station) }
+        if (parentIndex == -1) {
+            throw NoSuchElementException(
                 "Parent station not found: ${it.parent_station}"
             )
-        it.toStop(parent)
+        }
+        it.toStop(parents[parentIndex])
     } ?: listOf()
 
     return parents + children
@@ -62,14 +66,16 @@ private fun mapRoutes(
                 "Routes must have a defined agency, if there is more than 1 agency"
             }
         }
+        val agencyIndex = agencies
+            .binarySearch { agency -> agency.id.compareTo(it.agency_id) }
+        val agency = if (agencyIndex == -1) null else agencies[agencyIndex]
         it.toRoute(
             if (manyAgencies) {
-                agencies.find { agency -> agency.id == it.agency_id }
-                    ?: throw NoSuchElementException(
-                        "Agency not found: ${it.agency_id}"
-                    )
+                agency ?: throw NoSuchElementException(
+                    "Agency not found: ${it.agency_id}"
+                )
             } else {
-                null
+                agency
             }
         )
     }
@@ -82,12 +88,15 @@ private fun mapCalendarDates(
     calendarDates: List<CalendarDatesCsv>,
     calendars: List<Calendar>,
 ) = calendarDates.map {
-    it.toCalendarDates(
-        calendars.find { calendar -> calendar.id == it.service_id }
-            ?: throw NoSuchElementException(
-                "Calendar not found: ${it.service_id}"
-            )
-    )
+    val calendarIndex = calendars.binarySearch { calendar ->
+        calendar.id.compareTo(it.service_id)
+    }
+    if (calendarIndex == -1) {
+        throw NoSuchElementException(
+            "Calendar not found: ${it.service_id}"
+        )
+    }
+    it.toCalendarDates(calendars[calendarIndex])
 }
 
 private fun mapTrips(
@@ -95,14 +104,19 @@ private fun mapTrips(
     routes: List<Route>,
     calendars: List<Calendar>
 ) = trips.map {
-    it.toTrip(
-        routes.find { route -> route.id == it.route_id }
-            ?: throw NoSuchElementException("Route not found: ${it.route_id}"),
-        calendars.find { calendar -> calendar.id == it.service_id }
-            ?: throw NoSuchElementException(
-                "Calendar not found ${it.service_id}"
-            )
-    )
+    val routeIndex = routes.binarySearch {route ->
+        route.id.compareTo(it.route_id)
+    }
+    if (routeIndex == -1) {
+        throw NoSuchElementException("Route not found: ${it.route_id}")
+    }
+    val calendarIndex = calendars.binarySearch { calendar ->
+        calendar.id.compareTo(it.service_id)
+    }
+    if (calendarIndex == -1) {
+        throw NoSuchElementException("Calendar not found ${it.service_id}")
+    }
+    it.toTrip(routes[routeIndex], calendars[calendarIndex])
 }
 
 private fun mapStopTimes(
@@ -110,12 +124,19 @@ private fun mapStopTimes(
     trips: List<Trip>,
     stops: List<Stop>
 ) = stopTimes.map {
-    it.toStopTime(
-        trips.find { trip -> trip.id == it.trip_id }
-            ?: throw NoSuchElementException("Trip not found ${it.trip_id}"),
-        stops.find { stop -> stop.id == it.stop_id }
-            ?: throw NoSuchElementException("Stop not found ${it.stop_id}")
-    )
+    val tripIndex = trips.binarySearch { trip ->
+        trip.id.compareTo(it.trip_id)
+    }
+    if (tripIndex == -1) {
+        throw NoSuchElementException("Trip not found ${it.trip_id}")
+    }
+    val stopIndex = stops.binarySearch { stop ->
+        stop.id.compareTo(it.stop_id)
+    }
+    if (stopIndex == -1) {
+        throw NoSuchElementException("Stop not found ${it.stop_id}")
+    }
+    it.toStopTime(trips[tripIndex], stops[stopIndex])
 }
 
 ///////////////////////////////////////////////////////////////////////////
