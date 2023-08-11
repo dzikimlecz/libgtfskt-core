@@ -98,16 +98,3 @@ private fun StopTime.isOn(day: DayOfWeek) =
         )
     }
 
-private fun StopTime.isToday() =
-    when (val dayOfWeek = LocalDate.now().dayOfWeek) {
-        DayOfWeek.MONDAY -> trip.service.monday
-        DayOfWeek.TUESDAY -> trip.service.tuesday
-        DayOfWeek.WEDNESDAY -> trip.service.wednesday
-        DayOfWeek.THURSDAY -> trip.service.thursday
-        DayOfWeek.FRIDAY -> trip.service.friday
-        DayOfWeek.SATURDAY -> trip.service.saturday
-        DayOfWeek.SUNDAY -> trip.service.sunday
-        else -> throw IllegalStateException(
-            "Unknown day of week value: $dayOfWeek"
-        )
-    }
