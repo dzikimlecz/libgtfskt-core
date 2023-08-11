@@ -11,7 +11,7 @@ class CsvParsingTest {
     //given
         val file = File(
             this.javaClass.classLoader
-                .getResource("agency.txt")?.file
+                .getResource("feed/agency.txt")?.file
                 ?: throw IllegalStateException()
         )
     //when
@@ -25,7 +25,7 @@ class CsvParsingTest {
         //given
         val file = File(
             this.javaClass.classLoader
-                .getResource("stops.txt")?.file
+                .getResource("feed/stops.txt")?.file
                 ?: throw IllegalStateException()
         )
         //when
@@ -39,7 +39,7 @@ class CsvParsingTest {
         //given
         val file = File(
             this.javaClass.classLoader
-                .getResource("routes.txt")?.file
+                .getResource("feed/routes.txt")?.file
                 ?: throw IllegalStateException()
         )
         //when
@@ -53,7 +53,7 @@ class CsvParsingTest {
         //given
         val file = File(
             this.javaClass.classLoader
-                .getResource("trips.txt")?.file
+                .getResource("feed/trips.txt")?.file
                 ?: throw IllegalStateException()
         )
         //when
@@ -67,7 +67,7 @@ class CsvParsingTest {
         //given
         val file = File(
             this.javaClass.classLoader
-                .getResource("stop_times.txt")?.file
+                .getResource("feed/stop_times.txt")?.file
                 ?: throw IllegalStateException()
         )
         //when
@@ -81,7 +81,7 @@ class CsvParsingTest {
         //given
         val file = File(
             this.javaClass.classLoader
-                .getResource("calendar.txt")?.file
+                .getResource("feed/calendar.txt")?.file
                 ?: throw IllegalStateException()
         )
         //when
@@ -95,7 +95,7 @@ class CsvParsingTest {
         //given
         val file = File(
             this.javaClass.classLoader
-                .getResource("calendar_dates.txt")?.file
+                .getResource("feed/calendar_dates.txt")?.file
                 ?: throw IllegalStateException()
         )
         //when
