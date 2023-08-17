@@ -4,6 +4,7 @@ import com.fasterxml.jackson.dataformat.csv.CsvMapper
 import com.fasterxml.jackson.dataformat.csv.CsvParser
 import com.fasterxml.jackson.dataformat.csv.CsvSchema
 import java.io.File
+import java.io.FileNotFoundException
 import kotlin.reflect.KClass
 
 ///////////////////////////////////////////////////////////////////////////
@@ -168,8 +169,11 @@ private val calendarSchema = CsvSchema.builder()
     .setReorderColumns(true)
     .build()
 
-fun readCalendars(inputFile: File): List<CalendarCsv> =
+fun readCalendars(inputFile: File): List<CalendarCsv> = try {
     readItems(inputFile)
+} catch (_: FileNotFoundException) {
+    listOf()
+}
 
 ///////////////////////////////////////////////////////////////////////////
 // CALENDAR DATES
@@ -183,8 +187,11 @@ private val calendarDatesSchema = CsvSchema.builder()
     .setReorderColumns(true)
     .build()
 
-fun readCalendarDates(inputFile: File): List<CalendarDatesCsv> =
+fun readCalendarDates(inputFile: File): List<CalendarDatesCsv> = try {
     readItems(inputFile)
+} catch (_: FileNotFoundException) {
+    listOf()
+}
 
 ///////////////////////////////////////////////////////////////////////////
 // FEED INFOS
@@ -204,8 +211,11 @@ private val feedInfosSchema = CsvSchema.builder()
     .setReorderColumns(true)
     .build()
 
-fun readFeedInfos(inputFile: File): List<FeedInfoCsv> =
+fun readFeedInfos(inputFile: File): List<FeedInfoCsv> = try {
     readItems(inputFile)
+} catch (_: FileNotFoundException) {
+    listOf()
+}
 
 ///////////////////////////////////////////////////////////////////////////
 // BACKEND
