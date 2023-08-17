@@ -29,6 +29,7 @@ fun readAll(from: File) = CsvFeed(
     readStopTimes(File(from, "stop_times.txt")),
     readCalendars(File(from, "calendar.txt")),
     readCalendarDates(File(from, "calendar_dates.txt")),
+    readFeedInfos(File(from, "feed_info.txt")),
 )
 
 ///////////////////////////////////////////////////////////////////////////
@@ -186,6 +187,27 @@ fun readCalendarDates(inputFile: File): List<CalendarDatesCsv> =
     readItems(inputFile)
 
 ///////////////////////////////////////////////////////////////////////////
+// FEED INFOS
+///////////////////////////////////////////////////////////////////////////
+
+private val feedInfosSchema = CsvSchema.builder()
+    .addColumn("feed_publisher_name")
+    .addColumn("feed_publisher_url")
+    .addColumn("feed_lang")
+    .addColumn("default_lang")
+    .addColumn("feed_start_date")
+    .addColumn("feed_end_date")
+    .addColumn("feed_version")
+    .addColumn("feed_contact_email")
+    .addColumn("feed_contact_url")
+    .setUseHeader(true)
+    .setReorderColumns(true)
+    .build()
+
+fun readFeedInfos(inputFile: File): List<FeedInfoCsv> =
+    readItems(inputFile)
+
+///////////////////////////////////////////////////////////////////////////
 // BACKEND
 ///////////////////////////////////////////////////////////////////////////
 
@@ -206,6 +228,7 @@ private fun<T : Any> schema(type: KClass<T>): CsvSchema =
         StopTimeCsv::class -> stopTimeSchema
         CalendarCsv::class -> calendarSchema
         CalendarDatesCsv::class -> calendarDatesSchema
+        FeedInfoCsv::class -> feedInfosSchema
         else -> throw IllegalArgumentException(
             "There is no schema defined for class ${type.qualifiedName}"
         )

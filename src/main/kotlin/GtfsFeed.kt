@@ -16,6 +16,7 @@ data class GtfsFeed(
     val stopTimes: List<StopTime>,
     val calendars: List<Calendar>,
     val calendarDates: List<CalendarDates>,
+    val feedInfos: List<FeedInfo>,
 )
 
 ///////////////////////////////////////////////////////////////////////////
@@ -118,6 +119,17 @@ data class CalendarDates(
     val exceptionType: ExceptionType,
 )
 
+data class FeedInfo(
+    val feedPublisherName: String,
+    val feedPublisherUrl: String,
+    val feedLang: String,
+    val defaultLang: String? = null,
+    val feedStartDate: LocalDate? = null,
+    val feedEndDate: LocalDate? = null,
+    val feedVersion: String? = null,
+    val feedContactEmail: String? = null,
+    val feedContactUrl: String? = null,
+)
 
 ///////////////////////////////////////////////////////////////////////////
 // ENUMS

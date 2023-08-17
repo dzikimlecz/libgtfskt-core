@@ -14,6 +14,7 @@ fun mapObjects(csvFeed: CsvFeed): GtfsFeed {
     val trips = mapTrips(csvFeed.trips, routes, calendars).sortedBy { it.id }
     val stopTimes = mapStopTimes(csvFeed.stopTimes, trips, stops)
     val calendarDates = mapCalendarDates(csvFeed.calendarDates, calendars)
+    val feedInfos = mapFeedInfos(csvFeed.feedInfos)
 
     return GtfsFeed(
         agencies,
@@ -22,7 +23,8 @@ fun mapObjects(csvFeed: CsvFeed): GtfsFeed {
         trips,
         stopTimes,
         calendars,
-        calendarDates
+        calendarDates,
+        feedInfos,
     )
 }
 
@@ -138,6 +140,9 @@ private fun mapStopTimes(
     }
     it.toStopTime(trips[tripIndex], stops[stopIndex])
 }
+
+private fun mapFeedInfos(feedInfoCsvs: List<FeedInfoCsv>) =
+    feedInfoCsvs.map(FeedInfoCsv::toFeedInfo)
 
 ///////////////////////////////////////////////////////////////////////////
 // CONVERTERS
@@ -385,6 +390,36 @@ private fun CalendarDatesCsv.toCalendarDates(service: Calendar): CalendarDates {
         service,
         parseDate(date),
         exceptionType
+    )
+}
+
+private fun FeedInfoCsv.toFeedInfo(): FeedInfo {
+    require(feed_publisher_name.isNotEmpty()) {
+        "Feed publisher info can't be empty."
+    }
+    require(feed_publisher_url.isNotEmpty()) {
+        "Feed publisher url can't be empty."
+    }
+    require(feed_lang.isNotEmpty()) {
+        "Feed language can't be empty."
+    }
+
+    val startDate =
+        if (feed_start_date.isNotEmpty()) parseDate(feed_start_date) else null
+
+    val endDate =
+        if (feed_end_date.isNotEmpty()) parseDate(feed_end_date) else null
+
+    return FeedInfo(
+        feed_publisher_name,
+        feed_publisher_url,
+        feed_lang,
+        default_lang.takeIfNotEmpty(),
+        startDate,
+        endDate,
+        feed_version.takeIfNotEmpty(),
+        feed_contact_email.takeIfNotEmpty(),
+        feed_contact_url.takeIfNotEmpty(),
     )
 }
 

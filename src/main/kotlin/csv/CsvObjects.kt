@@ -12,6 +12,7 @@ data class CsvFeed(
     val stopTimes: List<StopTimeCsv>,
     val calendars: List<CalendarCsv>,
     val calendarDates: List<CalendarDatesCsv>,
+    val feedInfos: List<FeedInfoCsv>,
 )
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -155,6 +156,25 @@ data class CalendarDatesCsv(
         "",
         "",
         UNSET,
+    )
+}
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+data class FeedInfoCsv(
+    val feed_publisher_name: String,
+    val feed_publisher_url: String,
+    val feed_lang: String,
+    val default_lang: String = "",
+    val feed_start_date: String = "",
+    val feed_end_date: String = "",
+    val feed_version: String = "",
+    val feed_contact_email: String = "",
+    val feed_contact_url: String = "",
+) {
+    constructor() : this(
+        "",
+        "",
+        "",
     )
 }
 
