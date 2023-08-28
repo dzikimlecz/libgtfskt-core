@@ -20,11 +20,6 @@ data class UpcomingService(
 fun getFeed(directory: File): GtfsFeed = mapObjects(readAll(directory))
 
 interface FeedProcessor {
-
-    @Deprecated(message = "Replaced with getUpcomingServicesForName")
-    fun getUpcomingServicesFor(stop: String): List<UpcomingService>
-
-
     fun getUpcomingServicesForName(name: String): List<UpcomingService>
     fun getUpcomingServicesForCode(code: String): List<UpcomingService>
     fun getUpcomingServicesFor(stopTemplate: Stop): List<UpcomingService>
@@ -35,10 +30,6 @@ interface FeedProcessor {
 fun feedProcessor(feed: GtfsFeed): FeedProcessor = FeedProcessorImpl(feed)
 
 private class FeedProcessorImpl(val feed: GtfsFeed) : FeedProcessor {
-    @Deprecated("Replaced with getUpcomingServicesForName")
-    override fun getUpcomingServicesFor(stop: String): List<UpcomingService> =
-        getUpcomingServices {  it.stop.name == stop }
-
     override fun getUpcomingServicesForName(name: String) =
         getUpcomingServices { it.stop.name.equals(name, true) }
 
