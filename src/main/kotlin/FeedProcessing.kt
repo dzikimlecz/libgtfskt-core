@@ -20,17 +20,46 @@ data class UpcomingService(
 fun getFeed(directory: File): GtfsFeed = mapObjects(readAll(directory))
 
 interface FeedProcessor {
+
+    @Deprecated(message = "Replaced with getUpcomingServicesForName")
     fun getUpcomingServicesFor(stop: String): List<UpcomingService>
+
+
+    fun getUpcomingServicesForName(name: String): List<UpcomingService>
+    fun getUpcomingServicesForCode(code: String): List<UpcomingService>
     fun getUpcomingServicesFor(stopTemplate: Stop): List<UpcomingService>
+
+    val feedValid: Boolean?
 }
 
 fun feedProcessor(feed: GtfsFeed): FeedProcessor = FeedProcessorImpl(feed)
 
 private class FeedProcessorImpl(val feed: GtfsFeed) : FeedProcessor {
-    override fun getUpcomingServicesFor(stop: String): List<UpcomingService> {
+    @Deprecated("Replaced with getUpcomingServicesForName")
+    override fun getUpcomingServicesFor(stop: String): List<UpcomingService> =
+        getUpcomingServices {  it.stop.name == stop }
+
+    override fun getUpcomingServicesForName(name: String) =
+        getUpcomingServices { it.stop.name.equals(name, true) }
+
+
+    override fun getUpcomingServicesForCode(code: String) =
+        getUpcomingServices {
+            it.stop.code?.equals(code, true) ?: false
+        }
+
+    override fun getUpcomingServicesFor(stopTemplate: Stop)
+            : List<UpcomingService> = getUpcomingServices {
+        (it.stop.name == stopTemplate.name.ifEmpty { it.stop.name }
+                && it.stop.code == (stopTemplate.code ?: it.stop.code))
+    }
+
+    private fun getUpcomingServices(filter: (StopTime) -> Boolean)
+            : MutableList<UpcomingService> {
         val today = LocalDate.now().dayOfWeek
-        return feed.stopTimes.stream()
-            .filter { it.stop.name == stop }
+        return feed.stopTimes
+            .stream()
+            .filter (filter)
             .filter { it.isOn(today) }
             .filter {
                 val minuteAgo = LocalTime.now().minusMinutes(1)
@@ -47,31 +76,20 @@ private class FeedProcessorImpl(val feed: GtfsFeed) : FeedProcessor {
             .collect(Collectors.toList())
     }
 
-    override fun getUpcomingServicesFor(stopTemplate: Stop): List<UpcomingService> {
-        val today = LocalDate.now().dayOfWeek
-        return feed.stopTimes.stream()
-            .filter {
-                (it.stop.name == stopTemplate.name
-                        && it.stop.code == (stopTemplate.code ?: it.stop.code))
-            }
-            .filter { it.isOn(today) }
-            .filter {
-                val minuteAgo = LocalTime.now().minusMinutes(1)
-                it.departureTime?.isAfter(minuteAgo)
-                    ?: it.arrivalTime!!.isAfter(minuteAgo)
-            }
-            .sorted { stopTime1, stopTime2 ->
-                (stopTime1.departureTime ?: stopTime1.arrivalTime!!).compareTo(
-                    (stopTime2.departureTime ?: stopTime2.arrivalTime!!)
-                )
-            }
-            .limit(20)
-            .map(StopTime::upcomingService)
-            .collect(Collectors.toList())
+    private fun LocalDate.isBetween(start: LocalDate, end: LocalDate) =
+        equals(start) || (isAfter(start) && isBefore(end))
+
+
+    override val feedValid: Boolean? by lazy {
+        val feedInfo = feed.feedInfos.firstOrNull() ?: return@lazy null
+        val now = LocalDate.now()
+        val startDate = feedInfo.feedStartDate
+        val endDate = feedInfo.feedEndDate
+        if (startDate == null || endDate == null) null
+        else now.isBetween(startDate, endDate)
     }
 
-
-
+    
 }
 
 private fun StopTime.upcomingService() = UpcomingService(
