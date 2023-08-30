@@ -20,9 +20,18 @@ data class UpcomingService(
 fun getFeed(directory: File): GtfsFeed = mapObjects(readAll(directory))
 
 interface FeedProcessor {
-    fun getUpcomingServicesForName(name: String): List<UpcomingService>
-    fun getUpcomingServicesForCode(code: String): List<UpcomingService>
-    fun getUpcomingServicesFor(stopTemplate: Stop): List<UpcomingService>
+    fun getUpcomingServicesForName(
+        name: String,
+        itemsLimit: Int = 10
+    ): List<UpcomingService>
+    fun getUpcomingServicesForCode(
+        code: String,
+        itemsLimit: Int = 10
+    ): List<UpcomingService>
+    fun getUpcomingServicesFor(
+        stopTemplate: Stop,
+        itemsLimit: Int = 10
+    ): List<UpcomingService>
 
     val feedValid: Boolean?
 }
@@ -30,22 +39,24 @@ interface FeedProcessor {
 fun feedProcessor(feed: GtfsFeed): FeedProcessor = FeedProcessorImpl(feed)
 
 private class FeedProcessorImpl(val feed: GtfsFeed) : FeedProcessor {
-    override fun getUpcomingServicesForName(name: String) =
-        getUpcomingServices { it.stop.name.equals(name, true) }
+    override fun getUpcomingServicesForName(name: String, itemsLimit: Int) =
+        getUpcomingServices(itemsLimit) {
+            it.stop.name.equals(name, true)
+        }
 
 
-    override fun getUpcomingServicesForCode(code: String) =
-        getUpcomingServices {
+    override fun getUpcomingServicesForCode(code: String, itemsLimit: Int) =
+        getUpcomingServices(itemsLimit) {
             it.stop.code?.equals(code, true) ?: false
         }
 
-    override fun getUpcomingServicesFor(stopTemplate: Stop)
-            : List<UpcomingService> = getUpcomingServices {
+    override fun getUpcomingServicesFor(stopTemplate: Stop, itemsLimit: Int)
+            : List<UpcomingService> = getUpcomingServices(itemsLimit) {
         (it.stop.name == stopTemplate.name.ifEmpty { it.stop.name }
                 && it.stop.code == (stopTemplate.code ?: it.stop.code))
     }
 
-    private fun getUpcomingServices(filter: (StopTime) -> Boolean)
+    private fun getUpcomingServices(itemsLimit: Int, filter: (StopTime) -> Boolean)
             : MutableList<UpcomingService> {
         val today = LocalDate.now().dayOfWeek
         return feed.stopTimes
@@ -62,7 +73,7 @@ private class FeedProcessorImpl(val feed: GtfsFeed) : FeedProcessor {
                     (stopTime2.departureTime ?: stopTime2.arrivalTime!!)
                 )
             }
-            .limit(20)
+            .limit(itemsLimit.toLong())
             .map(StopTime::upcomingService)
             .collect(Collectors.toList())
     }

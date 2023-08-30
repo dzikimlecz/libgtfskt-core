@@ -19,7 +19,7 @@ class FeedProcessingKtTest {
         val feed = getFeed(file)
         val reader = feedProcessor(feed)
     //when
-        val services = reader.getUpcomingServicesFor("Jasna Rola")
+        val services = reader.getUpcomingServicesForName("Jasna Rola", 10)
     //then
         assertEquals(20, services.size)
     }
